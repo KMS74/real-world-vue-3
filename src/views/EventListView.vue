@@ -44,7 +44,7 @@ onMounted(async () => {
       <EventCard v-for="event in events" :key="event.id" :event="event" />
       <div class="pagination">
         <router-link
-          v-if="page != 1"
+          v-if="page !== 1"
           id="page-prev"
           :to="{ name: 'event-list', query: { page: page - 1 } }"
           rel="prev"
