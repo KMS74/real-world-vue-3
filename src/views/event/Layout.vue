@@ -1,8 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import EventService from '@/services/EventService'
+import { useRouter } from "vue-router";
 
 const { id } = defineProps({
   id: {
@@ -10,10 +11,21 @@ const { id } = defineProps({
   }
 })
 
+const router = useRouter()
+
 const event = ref({})
 
 onMounted(async () => {
-  event.value = await EventService.getEvent(id)
+  try {
+    event.value = await EventService.getEvent(id)
+  } catch (error) {
+    console.log('from the event layout', error)
+    if (error.response && error.response.status === 404) {
+      router.push({ name: '404Resource', params: { resource: 'event' } })
+    } else {
+      router.push({ name: 'NetworkError' })
+    }
+  }
 })
 </script>
 
