@@ -1,10 +1,10 @@
 import apiClient from '@/utils/axios-config'
 
 class EventService {
-  async getEvents() {
+  async getEvents(perPage, page) {
     try {
-      const response = await apiClient.get('/events')
-      return response.data
+      const response = await apiClient.get(`/events?_limit=${perPage}&_page=${page}`)
+      return response
     } catch (error) {
       console.error(error)
     }
